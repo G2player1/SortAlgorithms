@@ -2,12 +2,14 @@ package app;
 
 import models.Aluno;
 
+import java.io.IOException;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
 
 public class OrderAlgorithmsApplication {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         final int MAX = 10000000;
         Scanner sc = new Scanner(System.in);
@@ -94,14 +96,14 @@ public class OrderAlgorithmsApplication {
                 break;
             case 2:
                 for (int i = 0;i < MAX;i++){
-                    listaAlunos[i] = new Aluno("1º ano do Fundamental",4,i + 1,"teste" + i);
+                    listaAlunos[MAX - i - 1] = new Aluno("1º ano do Fundamental",4,i + 1,"teste" + i);
                 }
                 break;
             default:
                 System.out.println("opçõa inválida");
                 break;
         }
-        for (Aluno aluno : listaAlunos) {
+        for (Aluno aluno : listaAlunos){
             System.out.println(aluno);
         }
         int opcao_ordenador = 0;
@@ -120,39 +122,92 @@ public class OrderAlgorithmsApplication {
         opcao_ordenador = sc.nextInt();
         switch (opcao_ordenador){
             case 1:
+                long start = System.currentTimeMillis();
                 bubbleSort(listaAlunos);
+                long elapsed = System.currentTimeMillis() - start;
+                System.out.println("tempo de ordenação: " + elapsed);
+                System.in.read();
                 break;
             case 2:
+                start = System.currentTimeMillis();
                 selectionSort(listaAlunos);
+                elapsed = System.currentTimeMillis() - start;
+                System.out.println("tempo de ordenação: " + elapsed);
+                System.in.read();
                 break;
             case 3:
+                start = System.currentTimeMillis();
                 insertionSort(listaAlunos);
+                elapsed = System.currentTimeMillis() - start;
+                System.out.println("tempo de ordenação: " + elapsed);
+                System.in.read();
                 break;
             case 4:
+                start = System.currentTimeMillis();
                 mergeSort(listaAlunos,0, listaAlunos.length - 1);
+                elapsed = System.currentTimeMillis() - start;
+                System.out.println("tempo de ordenação: " + elapsed);
+                System.in.read();
                 break;
             case 5:
+                start = System.currentTimeMillis();
                 quickSort(listaAlunos,0, listaAlunos.length - 1);
+                elapsed = System.currentTimeMillis() - start;
+                System.out.println("tempo de ordenação: " + elapsed);
+                System.in.read();
                 break;
             case 6:
+                start = System.currentTimeMillis();
                 bogoSort(listaAlunos);
+                elapsed = System.currentTimeMillis() - start;
+                System.out.println("tempo de ordenação: " + elapsed);
+                System.in.read();
                 break;
             case 7:
+                start = System.currentTimeMillis();
                 combSort(listaAlunos);
+                elapsed = System.currentTimeMillis() - start;
+                System.out.println("tempo de ordenação: " + elapsed);
+                System.in.read();
                 break;
             case 8:
+                start = System.currentTimeMillis();
                 shellSort(listaAlunos);
+                elapsed = System.currentTimeMillis() - start;
+                System.out.println("tempo de ordenação: " + elapsed);
+                System.in.read();
                 break;
             case 9:
+                start = System.currentTimeMillis();
                 timSort(listaAlunos);
+                elapsed = System.currentTimeMillis() - start;
+                System.out.println("tempo de ordenação: " + elapsed);
+                System.in.read();
                 break;
             default:
                 System.out.println("opção inválida");
+                System.in.read();
                 break;
         }
         for (Aluno aluno : listaAlunos){
             System.out.println(aluno);
         }
+        int matricula = 0;
+        System.out.println("Digite uma matricula para busca: ");
+        matricula = sc.nextInt();
+        sc.nextLine();
+
+        System.out.println("teste busca linear: ");
+        long start = System.currentTimeMillis();
+        System.out.println(buscaLinear(listaAlunos,matricula));
+        long elapsed = System.currentTimeMillis() - start;
+        System.out.println("tempo de busca: " + elapsed);
+
+        System.out.println("teste busca binaria: ");
+        start = System.currentTimeMillis();
+        System.out.println(buscaBinaria(listaAlunos,matricula));
+        elapsed = System.currentTimeMillis() - start;
+        System.out.println("tempo de busca: " + elapsed);
     }
 
     /*
@@ -430,5 +485,27 @@ public class OrderAlgorithmsApplication {
         while (j < len2) {
             alunos[k++] = right[j++];
         }
+    }
+
+
+    public static Aluno buscaBinaria(Aluno[] listaAlunos, Integer matricula){
+        int inicio = 0;
+        int fim = listaAlunos.length - 1;
+        int meio = 0;
+        while (inicio <= fim){
+            meio = (inicio + fim)/2;
+            if (Objects.equals(listaAlunos[meio].getMatricula(), matricula)) return listaAlunos[meio];
+            if (listaAlunos[meio].getMatricula() < matricula) inicio = meio + 1;
+            else fim = meio - 1;
+
+        }
+        return null;
+    }
+
+    public static Aluno buscaLinear(Aluno[] listaAlunos, Integer matricula){
+        for (int i = 0;i < listaAlunos.length;i++){
+            if (Objects.equals(listaAlunos[i].getMatricula(), matricula)) return listaAlunos[i];
+        }
+        return null;
     }
 }
